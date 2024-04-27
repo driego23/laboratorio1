@@ -1,7 +1,7 @@
 <?php
 
-// Incluir la clase ConexionDBController
-require_once '../controllers/databases/ConexionDBController.php';
+// Incluir la clase de conexión a la base de datos
+include_once 'databases/ConexionDBController.php';
 
 // Verificar si se enviaron datos por POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -10,8 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usuario = $_POST["usuario"];
     $password = $_POST["pwd"];
 
-    // Crear instancia de ConexionDBController
-    $conexionDBController = new ConexionDBController();
+    // Crear instancia de la clase de conexión a la base de datos
+    $conexionDBController = new \App\controllers\databases\ConexionDBController();
 
     // Escapar los valores para prevenir inyección SQL
     $nombre = $conexionDBController->conex->real_escape_string($nombre);
@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Ejecutar la consulta SQL
     if ($conexionDBController->execSql($sql)) {
         // Redirigir al usuario a la página de inicio de sesión después del registro exitoso
-        header("Location: ../inicio_sesion.html");
+        header("Location: ../Views/inicio_sesion.html");
         exit();
     } else {
         // Mostrar un mensaje de error si ocurrió un problema al registrar al usuario

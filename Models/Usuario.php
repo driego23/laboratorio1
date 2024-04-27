@@ -1,5 +1,6 @@
 <?php
 
+
 class Usuario {
     // Array simulando usuarios y contraseñas
     private $usuarios = array(

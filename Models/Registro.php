@@ -1,15 +1,17 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="views/stiles.css">
 </head>
 <body>
+
     <div class="container">
         <h2>Registro</h2>
-        <form action="controllers/RegistroController.php" method="POST" class="register-form">
+        <form action="controller/RegistroController.php" method="POST" class="register-form">
             <div class="form-group">
                 <label for="nombre">Nombre</label>
                 <input type="text" id="nombre" name="nombre" required>
@@ -24,7 +26,7 @@
             </div>
             <button type="submit">Registrarse</button>
             <div class="login-link">
-                ¿Ya tienes una cuenta? <a href="../Views/inicio_sesion.html">Inicia sesión aquí</a>
+                ¿Ya tienes una cuenta? <a href="../">Inicia sesión aquí</a>
             </div>
         </form>
     </div>
