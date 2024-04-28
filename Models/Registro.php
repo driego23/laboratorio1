@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
-    <link rel="stylesheet" href="views/stiles.css">
+    <link rel="stylesheet" href="../CSS/registro.css">
 </head>
 <body>
 
@@ -26,7 +26,7 @@
             </div>
             <button type="submit">Registrarse</button>
             <div class="login-link">
-                ¿Ya tienes una cuenta? <a href="../">Inicia sesión aquí</a>
+                ¿Ya tienes una cuenta? <a href="../Views/inicio_sesion.html">Inicia sesión aquí</a>
             </div>
         </form>
     </div>

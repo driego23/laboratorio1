@@ -1,9 +1,10 @@
 <?php
+namespace App\controllers;
 
-// Incluir el modelo de usuario
-include_once '../models/Usuario.php';
-// Incluir la clase de conexión a la base de datos
+
 include_once 'databases/ConexionDBController.php';
+
+use App\controllers\databases\ConexionDBController;
 
 // Iniciar sesión
 session_start();
@@ -16,9 +17,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Crear instancia de la clase de conexión a la base de datos
     $conexionDBController = new \App\controllers\databases\ConexionDBController();
 
+    // Obtener la conexión a la base de datos
+    $conex = $conexionDBController->getConexion();
+
     // Escapar los valores para prevenir inyección SQL
-    $usuario = $conexionDBController->conex->real_escape_string($usuario);
-    $password = $conexionDBController->conex->real_escape_string($password);
+    $usuario = $conex->real_escape_string($usuario);
+    $password = $conex->real_escape_string($password);
 
     // Consulta SQL para verificar las credenciales del usuario
     $sql = "SELECT * FROM usuarios WHERE usuario='$usuario' AND pwd='$password'";
@@ -26,17 +30,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Ejecutar la consulta SQL
     $resultado = $conexionDBController->execSql($sql);
 
-    if ($resultado && $resultado->num_rows == 1) {
-        // Si se encontró un usuario con las credenciales proporcionadas, iniciar sesión
+ if ($resultado && $resultado->num_rows == 1) {
+    // Si se encontró un usuario con las credenciales proporcionadas, verificar si es un usuario autorizado
+    $usuarioData = $resultado->fetch_assoc();
+    if ($usuarioData && isset($usuarioData['es_admin']) && $usuarioData['es_admin']) {
+        // Si es un administrador, iniciar sesión
         $_SESSION["usuario"] = $usuario;
         
         // Redirigir al usuario a la página principal
-        header("Location: principal.php");
+        header("Location: productos_disponibles.php");
         exit();
     } else {
-        // Si las credenciales son inválidas, mostrar un mensaje de error
-        echo "Usuario o contraseña incorrectos";
+        // Si no es un administrador, mostrar un mensaje de error
+        exit("Acceso denegado: No tienes permisos de administrador para acceder a esta página. Por favor, inicia sesión con una cuenta de administrador.");
     }
+} else {
+    // Si las credenciales son inválidas, mostrar un mensaje de error
+    exit("Usuario o contraseña incorrectos");
 }
+}
+
 
 ?>
