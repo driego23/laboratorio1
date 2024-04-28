@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Selección de Productos</title>
+    <link rel="stylesheet" href="../CSS/seleccion_productos.css">
 </head>
 <body>
     <h2>Selección de Productos</h2>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Factura de Compra</title>
+    <link rel="stylesheet" href="../CSS/factura.css">
 </head>
 <body>
     <h2>Factura de Compra</h2>
@@ -38,4 +39,7 @@
         }
     }
     // Mostrar el descuento aplicado y el total a pagar
-    echo "Descuento aplicado: " . $descuento . "%
+    echo "Descuento aplicado: " . $descuento . "%";
+    ?>
+</body>
+</html>
