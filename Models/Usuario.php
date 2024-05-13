@@ -4,7 +4,7 @@
 class Usuario {
     // Array simulando usuarios y contraseñas
     private $usuarios = array(
-        'usuario1' => 'contraseña1',
+        'usuario1' => 'c    ontraseña1',
         'usuario2' => 'contraseña2'
     );
 

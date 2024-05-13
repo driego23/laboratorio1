@@ -1,4 +1,10 @@
 <?php
+// Incluir la clase de conexión a la base de datos
+include_once 'databases/ConexionDBController.php';
+
+// Crear una instancia de la clase de conexión a la base de datos
+$conexionDBController = new \App\controllers\databases\ConexionDBController();
+
 // Obtener los datos de los productos seleccionados
 $productos_seleccionados = array();
 foreach ($_POST as $key => $value) {
@@ -14,8 +20,7 @@ foreach ($_POST as $key => $value) {
 // Calcular el valor total de la compra
 $total = 0;
 foreach ($productos_seleccionados as $id_producto => $cantidad) {
-    // Obtener el precio del producto desde la base de datos
-    // Realizar la consulta SQL para obtener el precio del producto con el ID dado
+    // Realizar la consulta SQL para obtener el precio del producto con el ID dado   
     $sql = "SELECT precio FROM articulos WHERE id = $id_producto";
     // Ejecutar la consulta SQL
     $resultado = $conexionDBController->execSql($sql);
@@ -23,7 +28,10 @@ foreach ($productos_seleccionados as $id_producto => $cantidad) {
     if ($resultado && $resultado->num_rows == 1) {
         // Obtener el precio del producto
         $row = $resultado->fetch_assoc();
-        $precio_producto = $row['precio'];
+        // Convertir el precio a un número flotante
+        $precio_producto = floatval($row['precio']);
+        // Convertir la cantidad a un número entero
+        $cantidad = intval($cantidad);
         // Calcular el subtotal del producto (precio x cantidad)
         $subtotal_producto = $precio_producto * $cantidad;
         // Agregar el subtotal al total
@@ -44,10 +52,7 @@ if ($total > 200000) {
 // Calcular el total con descuento
 $total_con_descuento = $total - ($total * ($descuento / 100));
 
-// Mostrar el valor total de la compra y el descuento aplicado
-echo "Total a pagar: $" . $total_con_descuento . "<br>";
-echo "Descuento aplicado: " . $descuento . "%";
-
-header("Location: generar_factura.php");
+// Redirigir a la página de generar factura
+header("Location: ../Views/generar_factura.php");
 exit();
 ?>
