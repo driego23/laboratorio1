@@ -1,0 +1,70 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'poppins', sans-serif;
+}
+
+body {
+    background-image: url('IMG/seleccion\ producto.jpg'); /* Ruta de tu imagen de fondo */
+    background-size: cover; /* Ajustar el tamaño de la imagen para cubrir toda la pantalla */
+    color: #fff; /* Color del texto */
+    line-height: 1.6;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: #030303; /* Color del título */
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #f7f3f3; /* Color del texto del label */
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #a10d0d;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #922a2a;
+    color: #e6e0e0; /* Color del texto del botón */
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background: #0f0f0f;
+}
+
+p {
+    text-align: center;
+    color: red;
+    font-weight: bold;
+}
+
+
