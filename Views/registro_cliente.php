@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Cliente</title>
-    <link rel="stylesheet" href="CSS/registro_cliente.css">
+    <link rel="stylesheet" href="../CSS/inicio_registro.css">
 </head>
 <body>
     <h2>Registro de Cliente</h2>
