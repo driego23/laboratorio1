@@ -1,54 +1,63 @@
 body {
+    font-family: Arial, sans-serif;
+    background-image: url('IMG/inicio.jpeg'); /* Ajusta la ruta a la imagen de fondo */
+    background-size: cover; /* La imagen de fondo cubre toda la pantalla */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* No repite la imagen */
+    background-attachment: fixed; /* La imagen se queda fija al hacer scroll */
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9; /* Color de fondo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Altura del 100% de la ventana */
+    color: #f3ecec; /* Color del texto */
+}
+
+.container {
+    background-color: rgba(32, 25, 25, 0.384); /* Fondo blanco semi-transparente */
+    backdrop-filter: blur(10px); /* Desenfoque del fondo */
+    padding: 20px;
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 0 10px rgba(235, 233, 233, 0.822); /* Sombra ligera */
+    max-width: 400px;
+    width: 100%;
 }
 
 h2 {
+    text-align: center;
     margin-bottom: 20px;
-    font-size: 2em;
-    color: #4CAF50; /* Color del título */
-    text-align: center; /* Centrar el título */
 }
 
 form {
-    max-width: 400px;
-    margin: 0 auto; /* Centrar el formulario horizontalmente */
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
-    border: 2px solid rgba(0, 0, 0, 0.2);
-    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 label {
-    display: block;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     font-weight: bold;
 }
 
 input[type="text"],
 input[type="email"],
 select {
-    width: 100%;
     padding: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-sizing: border-box; /* Asegurar que el tamaño total del input sea igual al especificado */
 }
 
-button[type="submit"] {
-    width: 100%;
+button {
     padding: 10px;
-    background-color: #4CAF50;
-    color: #fff;
+    background-color: #007bff;
+    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-size: 16px;
 }
 
-button[type="submit"]:hover {
-    background-color: #45a049;
+button:hover {
+    background-color: #0056b3;
 }

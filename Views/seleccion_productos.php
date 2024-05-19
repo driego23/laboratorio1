@@ -14,7 +14,14 @@
         <input type="text" id="nombre" name="nombre" required><br><br>
 
         <label for="tipo_documento">Tipo de Documento:</label>
-        <input type="text" id="tipo_documento" name="tipo_documento" required><br><br>
+        <select id="tipo_documento" name="tipo_documento" required>
+                <option value="CC">Cédula de Ciudadanía</option>
+                <option value="CE">Cédula de Extranjería</option>
+                <option value="NIT">NIT</option>
+                <option value="TI">Tarjeta de Identidad</option>
+                <option value="Otro">Otro</option>
+      </select><br><br>
+      
 
         <label for="numero_documento">Número de Documento:</label>
         <input type="text" id="numero_documento" name="numero_documento" required><br><br>
