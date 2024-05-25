@@ -5,7 +5,7 @@
 }
 
 body {
-    background-image: url('IMG/seleccion\ producto.jpg'); /* Ruta de tu imagen de fondo */
+    background-image: url('IMG/producto.jpeg'); /* Ruta de tu imagen de fondo */
     background-size: cover; /* Ajustar el tamaño de la imagen para cubrir toda la pantalla */
     color: #fff; /* Color del texto */
     line-height: 1.6;

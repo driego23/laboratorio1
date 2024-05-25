@@ -48,7 +48,11 @@
         if (isset($_GET['total_con_descuento'])) {
             echo "Total a pagar: $" . htmlspecialchars($_GET['total_con_descuento']) . "<br>";
         }
+
         ?>
+        <form action="../controller/crearFactura.php" method="post">
+    <button type="submit">Guardar Factura</button>
+</form>
     </div>
 </body>
 </html>
