@@ -22,8 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($resultado && $resultado->num_rows == 1) {
         $_SESSION["usuario"] = $usuario;
-        // Redirigir al usuario a seleccion_productos.php
-        header("Location: ../Views/seleccion_productos.php");
+        header("Location: ../Views/informacion_cliente.php");
         exit();
     } else {
         $_SESSION["error_message"] = "Usuario o contraseña incorrectos";
