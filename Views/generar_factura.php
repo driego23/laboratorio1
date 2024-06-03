@@ -76,15 +76,20 @@ $cliente = [
 
         if (!empty($productos)) {
             echo "<h4>Productos:</h4>";
+            $subtotal = 0;
             foreach ($productos as $id_producto => $cantidad) {
-                $sql = "SELECT nombre FROM articulos WHERE id = $id_producto";
+                $sql = "SELECT nombre, precio FROM articulos WHERE id = $id_producto";
                 $resultado = $conexionDBController->execSql($sql);
                 if ($resultado && $resultado->num_rows == 1) {
                     $row = $resultado->fetch_assoc();
                     $nombre_producto = $row['nombre'];
-                    echo "- " . htmlspecialchars($nombre_producto) . ": " . htmlspecialchars($cantidad) . "<br>";
+                    $precio_producto = $row['precio'];
+                    $valor_total = $cantidad * $precio_producto;
+                    $subtotal += $valor_total;
+                    echo "- " . htmlspecialchars($nombre_producto) . ": " . htmlspecialchars($cantidad) . " x $" . htmlspecialchars($precio_producto) . " = $" . htmlspecialchars($valor_total) . "<br>";
                 }
             }
+            echo "Subtotal: $" . htmlspecialchars($subtotal) . "<br>";
         } else {
             echo "<p>No hay productos seleccionados.</p>";
         }
@@ -96,10 +101,8 @@ $cliente = [
         }
 
         if (!empty($total_con_descuento)) {
-            echo "Total a pagar: $" . htmlspecialchars($total_con_descuento) . "<br>";
+            echo "Total con descuento: $" . htmlspecialchars($total_con_descuento) . "<br>";
         }
-
-    
         ?>
 
         <form action="../controller/crearFactura.php" method="post">
@@ -112,8 +115,7 @@ $cliente = [
             <input type="hidden" name="total_con_descuento" value="<?php echo htmlspecialchars($total_con_descuento); ?>">
             <button type="submit">Guardar Factura</button>
         </form>
-        <a href="consultar_facturas.php?id_cliente=<?php echo $id_cliente; ?>" class="boton">Consultar Facturas</a>
-
+        <a href="consultar_facturas.php">Consultar Facturas</a>
     </div>
 </body>
 </html>

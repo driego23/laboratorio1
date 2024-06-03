@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $productos = array();
     foreach ($_POST as $key => $value) {
-        if (strpos($key, 'producto') === 0) {
+        if (strpos($key, 'producto') === 0 && intval($value) > 0) {
             $id_producto = substr($key, strlen('producto'));
             $productos[$id_producto] = $value;
         }
@@ -41,9 +41,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "Descuento aplicado: " . htmlspecialchars($descuento) . "%<br>";
     echo "Total a pagar: $" . htmlspecialchars($total_con_descuento) . "<br>";
     $cliente_info = array(
-        'nombreCompleto' => $nombreCompleto,
-        'tipoDocumento' => $tipoDocumento,
-        'numeroDocumento' => $numeroDocumento,
+        'nombre' => $nombreCompleto,
+        'tipo_documento' => $tipoDocumento,
+        'numero_documento' => $numeroDocumento,
         'telefono' => $telefono,
         'email' => $email
     );
