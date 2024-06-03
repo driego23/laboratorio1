@@ -1,46 +1,68 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Manejo de errores
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
 
     require_once 'databases/conexionDBcontroller.php';
 
-    if (isset($_POST['nombre'], $_POST['tipo_documento'], $_POST['numero_documento'], $_POST['telefono'], $_POST['email'], $_POST['productos_seleccionados'], $_POST['descuento'], $_POST['total_con_descuento'])) {
-        $nombre = $_POST['nombre'];
-        $tipo_documento = $_POST['tipo_documento'];
-        $numero_documento = $_POST['numero_documento'];
-        $telefono = $_POST['telefono'];
-        $email = $_POST['email'];
-        $productos_seleccionados = $_POST['productos_seleccionados'];
-        $descuento = $_POST['descuento'];
-        $total_con_descuento = $_POST['total_con_descuento'];
-        $conexionDBController = new \App\controllers\databases\ConexionDBController();
-        $fecha = date("Y-m-d H:i:s");
-        $estado = 'Pagada'; 
-        $sql = "INSERT INTO facturas (fecha, nombre, tipo_documento, numero_documento, telefono, email, estado, descuento, total_con_descuento) 
-                VALUES ('$fecha', '$nombre', '$tipo_documento', '$numero_documento', '$telefono', '$email', '$estado', '$descuento', '$total_con_descuento')";
-        
-        if ($conexionDBController->execSql($sql)) {
-            $factura_id = $conexionDBController->getLastInsertedId();
-            foreach ($productos_seleccionados as $id_producto => $cantidad) {
-                $sql_precio_producto = "SELECT precio FROM articulos WHERE id = $id_producto";
-                $resultado_precio_producto = $conexionDBController->execSql($sql_precio_producto);
+    // Obtener los datos del formulario
+    $numero_referencia = $_POST['numero_referencia'] ?? '';
+    $fecha_compra = $_POST['fecha_compra'] ?? '';
+    $id_cliente = $_POST['id_cliente'] ?? '';
+    $descuento = $_POST['descuento'] ?? '';
+    $cliente_json = $_POST['cliente'] ?? '';
+    $productos_json = $_POST['productos'] ?? '';
 
-                if ($resultado_precio_producto && $resultado_precio_producto->num_rows == 1) {
-                    $row_precio_producto = $resultado_precio_producto->fetch_assoc();
-                    $precio_unitario = $row_precio_producto['precio'];
-                    $sql_insert_detalle = "INSERT INTO detallefacturas (id_factura, id_producto, cantidad, precio_unitario) 
-                                           VALUES ('$factura_id', '$id_producto', '$cantidad', '$precio_unitario')";
-                    $conexionDBController->execSql($sql_insert_detalle);
+    // Decodificar los datos JSON
+    $cliente = json_decode($cliente_json, true);
+    $productos = json_decode($productos_json, true);
+
+    // Verificar que los datos necesarios no estén vacíos
+    if ($numero_referencia !== '' && $fecha_compra !== '' && $id_cliente !== '' && $descuento !== '' && !empty($productos)) {
+        try {
+            // Crear una instancia de la conexión a la base de datos
+            $conexionDBController = new \App\controllers\databases\ConexionDBController();
+
+            // Insertar factura en la tabla 'facturas'
+            $sql_factura = "INSERT INTO facturas (refencia, fecha, idCliente, estado, descuento) 
+                            VALUES ('$numero_referencia', '$fecha_compra', '$id_cliente', 'Pagada', '$descuento')";
+
+            // Ejecutar la consulta SQL para la factura
+            if ($conexionDBController->execSql($sql_factura)) {
+                // Obtener el ID de la factura insertada
+                // $factura_id = $conexionDBController->getConexion()->insert_id;
+
+                // Insertar detalles de factura en la tabla 'detallefacturas'
+                foreach ($productos as $id_producto => $cantidad) {
+                    // Obtener el precio unitario del artículo desde la base de datos
+                    $sql_precio_unitario = "SELECT precio FROM articulos WHERE id = '$id_producto'";
+                    $resultado = $conexionDBController->execSql($sql_precio_unitario);
+                    if ($resultado && $resultado->num_rows == 1) {
+                        $fila = $resultado->fetch_assoc();
+                        $precio_unitario = $fila['precio'];
+
+                        // Insertar detalle de factura
+                        $sql_detalle = "INSERT INTO detallefacturas (cantidad, precioUnitario, idArticulo, refenciaFactura) 
+                                        VALUES ('$cantidad', '$precio_unitario', '$id_producto', '$numero_referencia')";
+                        $conexionDBController->execSql($sql_detalle);
+                    } else {
+                        throw new Exception("Error al obtener el precio del artículo con ID $id_producto");
+                    }
                 }
-            }
 
-            echo "Factura creada exitosamente.";
-        } else {
-            echo "Error al crear la factura. Por favor, inténtalo de nuevo.";
+                echo json_encode(['message' => 'Factura creada exitosamente.']);
+            } else {
+                echo json_encode(['message' => 'Error al crear la factura. Por favor, inténtalo de nuevo.']);
+            }
+        } catch (Exception $e) {
+            echo json_encode(['message' => 'Error: ' . $e->getMessage()]);
         }
     } else {
-        echo "Error: Datos incompletos.";
+        echo json_encode(['message' => 'Error: Datos incompletos.']);
     }
 } else {
-    echo "Error: Método de solicitud incorrecto.";
+    echo json_encode(['message' => 'Error: Método de solicitud incorrecto.']);
 }
 ?>
+

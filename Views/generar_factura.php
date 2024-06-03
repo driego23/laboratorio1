@@ -1,3 +1,49 @@
+<?php
+include_once '../controller/databases/ConexionDBController.php';
+
+// Obtener la información del cliente y los productos desde GET
+$nombre = $_GET['nombre'] ?? '';
+$tipo_documento = $_GET['tipo_documento'] ?? '';
+$numero_documento = $_GET['numero_documento'] ?? '';
+$telefono = $_GET['telefono'] ?? '';
+$email = $_GET['email'] ?? '';
+$productos = $_GET['productos'] ?? [];
+$descuento = $_GET['descuento'] ?? '';
+$total_con_descuento = $_GET['total_con_descuento'] ?? '';
+
+// Crear una instancia de la conexión a la base de datos
+$conexionDBController = new \App\controllers\databases\ConexionDBController();
+
+// Verificar si el cliente ya existe
+$sql_cliente = "SELECT id FROM clientes WHERE numeroDocumento = '$numero_documento'";
+$resultado = $conexionDBController->execSql($sql_cliente);
+$id_cliente = null;
+
+if ($resultado && $resultado->num_rows == 1) {
+    $row = $resultado->fetch_assoc();
+    $id_cliente = $row['id'];
+} else {
+    // Insertar el nuevo cliente
+    $sql_insert_cliente = "INSERT INTO clientes (nombreCompleto, tipoDocumento, numeroDocumento, email, telefono) 
+                           VALUES ('$nombre', '$tipo_documento', '$numero_documento', '$email', '$telefono')";
+    if ($conexionDBController->execSql($sql_insert_cliente)) {
+        $id_cliente = $conexionDBController->getConexion()->insert_id;
+    }
+}
+
+// Iniciar sesión y guardar el id_cliente en la sesión
+session_start();
+$_SESSION['id_cliente'] = $id_cliente;
+
+$cliente = [
+    'nombre' => $nombre,
+    'tipo_documento' => $tipo_documento,
+    'numero_documento' => $numero_documento,
+    'telefono' => $telefono,
+    'email' => $email
+];
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,57 +57,63 @@
         <h2>Factura de Compra</h2>
         <h3>Detalles de la Factura</h3>
         <?php
-        echo "Número de referencia: " . uniqid() . "<br>";
-        echo "Fecha de compra: " . date("Y-m-d H:i:s") . "<br>";
-        if (isset($_GET['nombreCompleto']) && isset($_GET['tipoDocumento']) && isset($_GET['numeroDocumento']) && isset($_GET['telefono']) && isset($_GET['email'])) {
+        $numero_referencia = uniqid();
+        $fecha_compra = date("Y-m-d H:i:s");
+
+        echo "Número de referencia: " . $numero_referencia . "<br>";
+        echo "Fecha de compra: " . $fecha_compra . "<br>";
+
+        if (!empty($cliente['nombre']) && !empty($cliente['tipo_documento']) && !empty($cliente['numero_documento']) && !empty($cliente['telefono']) && !empty($cliente['email'])) {
             echo "<h4>Información del Cliente:</h4>";
-            echo "Nombre: " . htmlspecialchars($_GET['nombreCompleto']) . "<br>";
-            echo "Tipo de Documento: " . htmlspecialchars($_GET['tipoDocumento']) . "<br>";
-            echo "Número de Documento: " . htmlspecialchars($_GET['numeroDocumento']) . "<br>";
-            echo "Teléfono: " . htmlspecialchars($_GET['telefono']) . "<br>";
-            echo "Email: " . htmlspecialchars($_GET['email']) . "<br>";
+            echo "Nombre: " . htmlspecialchars($cliente['nombre']) . "<br>";
+            echo "Tipo de Documento: " . htmlspecialchars($cliente['tipo_documento']) . "<br>";
+            echo "Número de Documento: " . htmlspecialchars($cliente['numero_documento']) . "<br>";
+            echo "Teléfono: " . htmlspecialchars($cliente['telefono']) . "<br>";
+            echo "Email: " . htmlspecialchars($cliente['email']) . "<br>";
         } else {
             echo "<p>No se proporcionó información del cliente.</p>";
         }
-        if (isset($_GET['productos']) && is_array($_GET['productos']) && !empty($_GET['productos'])) {
+
+        if (!empty($productos)) {
             echo "<h4>Productos:</h4>";
-            $total = 0;
-            $subtotal_productos = 0;
-            include_once '../controller/databases/ConexionDBController.php';
-            $conexionDBController = new \App\controllers\databases\ConexionDBController();
-            foreach ($_GET['productos'] as $id_producto => $cantidad) {
-                $sql = "SELECT nombre, precio FROM articulos WHERE id = $id_producto";
+            foreach ($productos as $id_producto => $cantidad) {
+                $sql = "SELECT nombre FROM articulos WHERE id = $id_producto";
                 $resultado = $conexionDBController->execSql($sql);
                 if ($resultado && $resultado->num_rows == 1) {
                     $row = $resultado->fetch_assoc();
                     $nombre_producto = $row['nombre'];
-                    $precio_unitario = $row['precio'];
-                    $subtotal_producto = floatval($cantidad) * floatval($precio_unitario);
-                    echo "- " . htmlspecialchars($nombre_producto) . ": " . htmlspecialchars($cantidad) . " x $" . htmlspecialchars($precio_unitario) . " = $" . htmlspecialchars($subtotal_producto) . "<br>";
-                    $subtotal_productos += $subtotal_producto;
+                    echo "- " . htmlspecialchars($nombre_producto) . ": " . htmlspecialchars($cantidad) . "<br>";
                 }
-            }
-            echo "<h4>Subtotal: $" . htmlspecialchars($subtotal_productos) . "</h4>";
-            $descuento = 0;
-            if ($subtotal_productos > 200000) {
-                $descuento = 10;
-            } elseif ($subtotal_productos > 100000) {
-                $descuento = 5;
-            }
-            $total_con_descuento = $subtotal_productos - ($subtotal_productos * ($descuento / 100));
-            if ($descuento > 0) {
-                echo "Descuento aplicado: " . htmlspecialchars($descuento) . "%<br>";
-                echo "Total con descuento: $" . htmlspecialchars($total_con_descuento) . "<br>";
-            } else {
-                echo "<p>No se aplicó ningún descuento.</p>";
             }
         } else {
             echo "<p>No hay productos seleccionados.</p>";
         }
+
+        if (!empty($descuento)) {
+            echo "Descuento aplicado: " . htmlspecialchars($descuento) . "%<br>";
+        } else {
+            echo "<p>No se aplicó ningún descuento.</p>";
+        }
+
+        if (!empty($total_con_descuento)) {
+            echo "Total a pagar: $" . htmlspecialchars($total_con_descuento) . "<br>";
+        }
+
+    
         ?>
+
         <form action="../controller/crearFactura.php" method="post">
+            <input type="hidden" name="numero_referencia" value="<?php echo $numero_referencia; ?>">
+            <input type="hidden" name="fecha_compra" value="<?php echo $fecha_compra; ?>">
+            <input type="hidden" name="id_cliente" value="<?php echo htmlspecialchars($id_cliente); ?>">
+            <input type="hidden" name="cliente" value='<?php echo json_encode($cliente); ?>'>
+            <input type="hidden" name="productos" value='<?php echo json_encode($productos); ?>'>
+            <input type="hidden" name="descuento" value="<?php echo htmlspecialchars($descuento); ?>">
+            <input type="hidden" name="total_con_descuento" value="<?php echo htmlspecialchars($total_con_descuento); ?>">
             <button type="submit">Guardar Factura</button>
         </form>
+        <a href="consultar_facturas.php?id_cliente=<?php echo $id_cliente; ?>" class="boton">Consultar Facturas</a>
+
     </div>
 </body>
 </html>
