@@ -1,0 +1,86 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0; /* Color de fondo */
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+h1, h2, h3 {
+    color: #333;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+/* Estilos específicos para la factura */
+.invoice-header {
+    text-align: center;
+    background-color: #007bff; /* Color de encabezado */
+    color: #fff; /* Color de texto en el encabezado */
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.invoice-header h1 {
+    margin-bottom: 10px;
+}
+
+.invoice-details {
+    margin-bottom: 20px;
+}
+
+.invoice-details p {
+    margin: 5px 0;
+}
+
+.invoice-items {
+    margin-bottom: 20px;
+}
+
+.invoice-items ul {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.invoice-items li {
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.invoice-total {
+    text-align: right;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 20px;
+    color: #28a745; /* Color del total */
+}
+
+.invoice-footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.invoice-footer a {
+    color: #333;
+    text-decoration: none;
+}
+
+.invoice-footer a:hover {
+    text-decoration: underline;
+}

@@ -115,7 +115,7 @@ $cliente = [
             <input type="hidden" name="total_con_descuento" value="<?php echo htmlspecialchars($total_con_descuento); ?>">
             <button type="submit">Guardar Factura</button>
         </form>
-        <a href="consultar_facturas.php">Consultar Facturas</a>
+        <a href="consultar_facturas.php?id_cliente=<?php echo $id_cliente; ?>">Consultar Facturas</a>
     </div>
 </body>
 </html>
