@@ -1,11 +1,11 @@
 <?php
-// Incluimos el archivo de conexión a la base de datos
+
 include_once '../controller/databases/ConexionDBController.php';
 
-// Crear una instancia de la conexión a la base de datos
+
 $conexionDBController = new \App\controllers\databases\ConexionDBController();
 
-// Obtener el ID del cliente desde la URL
+
 $id_cliente = $_GET['id_cliente'] ?? null;
 
 if (!$id_cliente) {
@@ -13,9 +13,9 @@ if (!$id_cliente) {
     exit;
 }
 
-// Verificar que la conexión no sea nula antes de llamar a las funciones
+
 if ($conexionDBController) {
-    // Función para obtener las facturas del cliente desde la base de datos
+   
     function obtenerFacturasCliente($id_cliente, $conexion) {
         $query = "SELECT * FROM facturas WHERE idcliente = ?";
         $statement = $conexion->getConexion()->prepare($query);
@@ -29,7 +29,6 @@ if ($conexionDBController) {
         return $facturas;
     }
 
-    // Función para obtener los detalles de una factura según su ID de referencia
 function obtenerDetallesFactura($refencia_factura, $conexion) {
     $query = "SELECT df.*, a.nombre as nombre_articulo, a.precio 
               FROM detallefacturas df 
@@ -47,7 +46,7 @@ function obtenerDetallesFactura($refencia_factura, $conexion) {
 }
 
 
-    // Función para obtener las fechas de facturación únicas del cliente
+  
     function obtenerFechasFacturacionCliente($id_cliente, $conexion) {
         $query = "SELECT DISTINCT fecha FROM facturas WHERE idcliente = ?";
         $statement = $conexion->getConexion()->prepare($query);
@@ -61,7 +60,6 @@ function obtenerDetallesFactura($refencia_factura, $conexion) {
         return $fechas;
     }
 
-    // Función para obtener la información del cliente
     function obtenerInformacionCliente($id_cliente, $conexion) {
         $query = "SELECT * FROM clientes WHERE id = ?";
         $statement = $conexion->getConexion()->prepare($query);
@@ -71,7 +69,6 @@ function obtenerDetallesFactura($refencia_factura, $conexion) {
         return $result->fetch_assoc();
     }
 
-    // Obtener la información del cliente
     $cliente = obtenerInformacionCliente($id_cliente, $conexionDBController);
     ?>
     <!DOCTYPE html>
@@ -86,7 +83,7 @@ function obtenerDetallesFactura($refencia_factura, $conexion) {
     <div class="container">
         <h1>Consultar Facturas del Cliente</h1>
 
-        <!-- Información del Cliente -->
+    
         <h2>Información del Cliente</h2>
         <?php if ($cliente): ?>
             <p>Nombre: <?php echo htmlspecialchars($cliente['nombreCompleto']); ?></p>
@@ -98,7 +95,7 @@ function obtenerDetallesFactura($refencia_factura, $conexion) {
             <p>No se encontró la información del cliente.</p>
         <?php endif; ?>
 
-        <!-- Fechas de Facturación -->
+      
         <h2>Fechas de Facturación</h2>
         <ul>
             <?php
@@ -108,8 +105,6 @@ function obtenerDetallesFactura($refencia_factura, $conexion) {
             }
             ?>
         </ul>
-
-        // Facturas del Cliente por Fecha
 <?php
 if (isset($_GET['fecha'])) {
     $fecha_seleccionada = $_GET['fecha'];
@@ -119,7 +114,7 @@ if (isset($_GET['fecha'])) {
             echo "<h2>Factura</h2>";
             echo "<p>Fecha de Emisión: {$factura['fecha']}</p>";
 
-            // Obtener los detalles de la factura utilizando la columna "referencia"
+           
             $detalles_factura = obtenerDetallesFactura($factura['refencia'], $conexionDBController);
             echo "<h3>Detalles de la Factura:</h3>";
             echo "<ul>";

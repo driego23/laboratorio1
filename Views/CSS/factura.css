@@ -1,50 +1,130 @@
+
+
 body {
-    margin: 0;
-    padding: 0;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9; /* Color de fondo */
-}
-
-.container {
-    max-width: 600px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    background-color: #f9f9f9;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 40px auto;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
-    border: 2px solid rgba(0, 0, 0, 0.2);
-    border-radius: 20px;
-    text-align: center; /* Centrar el texto */
-}
-
-h2 {
-    margin-bottom: 20px;
-    font-size: 2em;
-    color: #4CAF50; /* Color del título */
-}
-
-h3 {
-    margin-bottom: 20px;
-    font-size: 1.5em;
-}
-
-h4 {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center; 
+  }
+  
+  h2, h3, h4 {
     margin-bottom: 10px;
-    font-size: 1.2em;
+    color: #337ab7;
+  
+  }
+  
+  h2 {
+    font-size: 24px;
+    text-align: center;
+  }
+  
+  h3 {
+    font-size: 18px;
+    text-align: center;
+  }
+  
+  h4 {
+    font-size: 16px;
+    text-align: center;
+  }
+  
+  .cliente-info {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .cliente-info h4 {
+    margin-top: 0;
+    text-align: center;
+  }
+  
+  .cliente-info p {
+    margin-bottom: 10px;
+  }
+  
+ 
+  
+  .productos {
+    margin-bottom: 20px;
+  }
+  
+  .productos h4 {
+    margin-top: 0;
+  }
+  
+  .productos ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .productos li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .productos li:last-child {
+    border-bottom: none;
+  }
+  
+  .productos li span {
     font-weight: bold;
-}
+    margin-right: 10px;
+  }
+  
 
-p {
+  
+  .subtotal,.total {
+    font-size: 18px;
+    font-weight: bold;
     margin-bottom: 10px;
-    font-size: 1em;
-}
+  }
+  
+  .subtotal {
+    color: #337ab7;
+  }
+  
+  .total {
+    color: #337ab7;
+    font-size: 24px;
+  }
+    
+  form {
+    margin-top: 20px;
+  }
+  
+  button[type="submit"] {
+    background-color: #337ab7;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #23527c;
+  }
+  
 
-p:last-child {
-    margin-bottom: 0;
-}
-
-ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-ul li {
-    margin-bottom: 5px;
-}
+  
+  a {
+    text-decoration: none;
+    color: #337ab7;
+  }
+  
+  a:hover {
+    color: #23527c;
+  }

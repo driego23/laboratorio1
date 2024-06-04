@@ -1,7 +1,6 @@
 <?php
 include_once '../controller/databases/ConexionDBController.php';
 
-// Obtener la información del cliente y los productos desde GET
 $nombre = $_GET['nombre'] ?? '';
 $tipo_documento = $_GET['tipo_documento'] ?? '';
 $numero_documento = $_GET['numero_documento'] ?? '';
@@ -10,11 +9,7 @@ $email = $_GET['email'] ?? '';
 $productos = $_GET['productos'] ?? [];
 $descuento = $_GET['descuento'] ?? '';
 $total_con_descuento = $_GET['total_con_descuento'] ?? '';
-
-// Crear una instancia de la conexión a la base de datos
 $conexionDBController = new \App\controllers\databases\ConexionDBController();
-
-// Verificar si el cliente ya existe
 $sql_cliente = "SELECT id FROM clientes WHERE numeroDocumento = '$numero_documento'";
 $resultado = $conexionDBController->execSql($sql_cliente);
 $id_cliente = null;
@@ -23,7 +18,6 @@ if ($resultado && $resultado->num_rows == 1) {
     $row = $resultado->fetch_assoc();
     $id_cliente = $row['id'];
 } else {
-    // Insertar el nuevo cliente
     $sql_insert_cliente = "INSERT INTO clientes (nombreCompleto, tipoDocumento, numeroDocumento, email, telefono) 
                            VALUES ('$nombre', '$tipo_documento', '$numero_documento', '$email', '$telefono')";
     if ($conexionDBController->execSql($sql_insert_cliente)) {
@@ -31,7 +25,6 @@ if ($resultado && $resultado->num_rows == 1) {
     }
 }
 
-// Iniciar sesión y guardar el id_cliente en la sesión
 session_start();
 $_SESSION['id_cliente'] = $id_cliente;
 
